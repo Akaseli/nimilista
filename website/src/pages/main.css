@@ -1,0 +1,12 @@
+* {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+button{
+    border-style: none;
+    padding: 10px;
+    border-radius: 0.5rem;
+    color: white;
+    background-color: rgb(63, 172, 58);
+    font-size: medium;
+}

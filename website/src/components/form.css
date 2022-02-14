@@ -1,0 +1,11 @@
+form{
+    margin: 10px;
+}
+
+input{
+    border-style: none;
+    background-color: rgb(236, 236, 236);
+    padding: 10px;
+    border-radius: 0.5rem;
+    margin: 10px;
+}
