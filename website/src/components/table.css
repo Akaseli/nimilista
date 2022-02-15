@@ -24,3 +24,22 @@ td.control{
     text-align: end;
 }
 
+th.sorted{
+    background-color: rgb(56, 155, 51);
+}
+
+th:hover{
+    background-color: rgb(56, 155, 51);
+    transition: 200ms;
+}
+
+.sort{
+    width: 15px;
+    margin-left: 10px;
+}
+
+.sortReverse{
+    width: 15px;
+    transform: rotate(180deg);
+    margin-left: 10px;
+}

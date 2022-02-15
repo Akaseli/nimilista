@@ -2,11 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { Edit } from '../components/Edit';
 import { Form } from '../components/Form';
 import { Table } from '../components/Table';
-import { Person } from '../interfaces';
+import { Person, Sort, SortedPeople } from '../interfaces';
 import './main.css'
+
+
 
 export const MainPage: React.FC = () => {
     const [people, setPeople] = useState<Person[]>([]);
+    const [sort, setSort] = useState<Sort>({reverse: false, sort: null});
+
+    const [sortedPeople, setSortedPeople] = useState<SortedPeople[]>([]);
 
     useEffect(() => {
         setPeople([{firstName: "Testi", lastName: "Ukko", age: 0}, {firstName: "Ukko", lastName: "Testi", age: 1}])
@@ -26,13 +31,43 @@ export const MainPage: React.FC = () => {
         const temp = [...people]
         temp[index] = newData
         setPeople(temp)
-
     }
+    function changeSort(value:Sort){
+        setSort(value);
+    }
+
+    useEffect(() => {
+        const temp:SortedPeople[] = people.map((person, index) => {
+            return({mainIndex: index, person: person})
+        })
+        if(sort.sort === null){
+            setSortedPeople(temp);
+            return;
+        };
+        const sortVal = sort.sort;
+
+        temp.sort((a, b) => {
+            if(a.person[sortVal] > b.person[sortVal]){
+                return -1;
+            }
+            if(a.person[sortVal] < b.person[sortVal]){
+                return 1;
+            }
+            return 0;
+        })
+
+        if(sort.reverse){
+            setSortedPeople(temp.reverse());
+        }
+        setSortedPeople(temp);
+        
+    }, [people, sort]);
 
      return(
          <div>
+             <h3>Lisää henkilö</h3>
             <Form onSubmit={addPeople}/>
-            <Table handleRemove={removePerson} handleEdit={handleEdit} people={people}/>
+            <Table changeSort={changeSort} handleRemove={removePerson} handleEdit={handleEdit} people={sortedPeople}/>
          </div>
      );
 }
