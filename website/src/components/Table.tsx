@@ -113,18 +113,18 @@ export const Table: React.FC<Props> = ({ people, handleRemove, handleEdit, chang
                         }} className={sort.sort === "firstName" ? "sorted" : "unsorted"}>
                             Etunimi
 
-                            {sort.sort === "firstName" && !sort.reverse? <img className='sortReverse' src={arrow}/> : null}
+                            {sort.sort === "firstName" && !sort.reverse? <img className='sort' src={arrow}/> : null}
 
-                            {sort.sort === "firstName" && sort.reverse ? <img className='sort' src={arrow}/> : null}
+                            {sort.sort === "firstName" && sort.reverse ? <img className='sortReverse' src={arrow}/> : null}
                         </th>
 
                         <th onClick={() => {
                             handleSortChange("lastName")
                         }} className={sort.sort === "lastName" ? "sorted" : "unsorted"}>
                             Sukunimi
-                            {sort.sort === "lastName" && !sort.reverse? <img className='sortReverse' src={arrow}/> : null}
+                            {sort.sort === "lastName" && !sort.reverse? <img className='sort' src={arrow}/> : null}
 
-                            {sort.sort === "lastName" && sort.reverse ? <img className='sort' src={arrow}/> : null}
+                            {sort.sort === "lastName" && sort.reverse ? <img className='sortReverse' src={arrow}/> : null}
                         </th>
 
                         <th onClick={() => {

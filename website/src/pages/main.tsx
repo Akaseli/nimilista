@@ -46,15 +46,29 @@ export const MainPage: React.FC = () => {
         };
         const sortVal = sort.sort;
 
-        temp.sort((a, b) => {
-            if(a.person[sortVal] > b.person[sortVal]){
-                return -1;
-            }
-            if(a.person[sortVal] < b.person[sortVal]){
-                return 1;
-            }
-            return 0;
-        })
+        if(sortVal == "age"){
+            temp.sort((a, b) => {
+                if(a.person[sortVal] > b.person[sortVal]){
+                    return -1;
+                }
+                if(a.person[sortVal] < b.person[sortVal]){
+                    return 1;
+                }
+                return 0;
+            })
+        }else{
+            temp.sort((a, b) => {
+                if(a.person[sortVal] < b.person[sortVal]){
+                    return -1;
+                }
+                if(a.person[sortVal] > b.person[sortVal]){
+                    return 1;
+                }
+                return 0;
+            })
+        }
+
+       
 
         if(sort.reverse){
             setSortedPeople(temp.reverse());
