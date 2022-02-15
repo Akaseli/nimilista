@@ -2,11 +2,12 @@
     "compilerOptions": {
         "module": "commonjs",
         "target": "es5",
-        "rootDir": "./src",
-        "outDir": "./build",
-        "strict": true,
         "esModuleInterop": true,
-        "skipLibCheck": true,
-        "forceConsistentCasingInFileNames": true
-      }
+        "rootDir": "./src/",
+        "outDir": "./build/",
+        "strict": true,
+    },
+    "include": [
+        "./src/server.ts"
+    ]
 }

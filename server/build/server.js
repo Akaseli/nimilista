@@ -6,12 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var app = (0, express_1.default)();
 var port = 4000;
-app.get('/', function (req, res) {
-    res.send({ online: true });
-});
-app.get('/people', function (req, res) {
+app.get("/", function (req, res) {
     res.send({ online: true });
 });
 app.listen(port, function () {
-    return console.log("Listening on ".concat(port));
+    console.log("Listening on ".concat(port));
 });
