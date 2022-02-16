@@ -24,11 +24,58 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var dotenv = __importStar(require("dotenv"));
+var pg_1 = require("pg");
 var app = (0, express_1.default)();
-var port = 4000;
+var port = process.env.PORT || 4000;
+app.use(express_1.default.json());
 dotenv.config({ path: __dirname + '/.env' });
+var production = process.env.PRODUCTION === "true";
+var localDatabaseUrl = "postgresql://".concat(process.env.USER, ":").concat(process.env.PASSWORD, "@").concat(process.env.HOST, ":").concat(process.env.DBPORT, "/").concat(process.env.DATABASE);
+var pool = new pg_1.Pool({
+    connectionString: production ? process.env.DATABASE_URL : localDatabaseUrl,
+});
 app.get("/", function (req, res) {
-    res.send("Value " + process.env.TEST);
+    res.send({ online: true });
+});
+app.get("/people", function (req, res) {
+    pool.query('SELECT * FROM people', function (error, results) {
+        if (error) {
+            throw error;
+        }
+        res.status(200).json(results.rows);
+    });
+});
+app.get("/people/:userId", function (req, res) {
+    pool.query('SELECT * FROM people WHERE id = $1', [req.params.userId], function (error, results) {
+        if (error) {
+            throw error;
+        }
+        res.status(200).json(results.rows[0]);
+    });
+});
+app.post("/addPerson", function (req, res) {
+    pool.query('INSERT INTO people(firstname, lastname, age) VALUES($1, $2, $3)', [req.body["firstName"], req.body["lastName"], req.body["age"]], function (error, results) {
+        if (error) {
+            throw error;
+        }
+        res.status(200).send();
+    });
+});
+app.delete("/delete/:userId", function (req, res) {
+    pool.query('DELETE FROM people WHERE id = $1', [req.params.userId], function (error, results) {
+        if (error) {
+            throw error;
+        }
+        res.status(200).send();
+    });
+});
+app.put("/people/modify/:userId", function (req, res) {
+    pool.query('UPDATE people SET firstname = $1, lastname = $2, age = $3)', [req.body["firstName"], req.body["lastName"], req.body["age"]], function (error, results) {
+        if (error) {
+            throw error;
+        }
+        res.status(200).send();
+    });
 });
 app.listen(port, function () {
     console.log("Listening on ".concat(port));
