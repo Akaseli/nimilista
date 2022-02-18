@@ -1,2 +1,2 @@
 # Nimilista
-Voit lisätä nimen ja iän, sekä laitella henkilöitä iän, etunimen ja sukunimen avulla. 
+Sovellus, johon voit lisätä henkilön ja laitella henkilöitä eri ominaisuuksien perusteella.
