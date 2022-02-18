@@ -68,5 +68,5 @@ app.put("/people/modify/:userId", (req, res) => {
 //});
 
 app.listen(port, () => {
-    console.log(`Listening on ${port}`)
+    console.log(`Listening on ${port}, Production ${production}`)
 })
