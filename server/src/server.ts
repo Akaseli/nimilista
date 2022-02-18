@@ -16,6 +16,9 @@ const localDatabaseUrl =  `postgresql://${process.env.USER}:${process.env.PASSWO
 
 const pool = new Pool({
     connectionString: production ? process.env.DATABASE_URL : localDatabaseUrl,
+    ssl: {
+        rejectUnauthorized: false,
+    },
 })
 
 app.get("/people", (req, res) => {
