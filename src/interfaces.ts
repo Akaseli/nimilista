@@ -1,15 +1,11 @@
 export interface Person {
-    firstName: string,
-    lastName: string,
+    id: number,
+    firstname: string,
+    lastname: string,
     age: number
-}
-
-export interface SortedPeople{
-    person: Person,
-    mainIndex: number
 }
 
 export interface Sort{
     reverse: boolean,
-    sort:  null | "firstName" | "lastName" | "age"
+    sort:  null | "firstname" | "lastname" | "age"
 }

@@ -33,6 +33,10 @@ th:hover{
     transition: 200ms;
 }
 
+td button{
+    margin: 5px;
+}
+
 .sort{
     width: 15px;
     margin-left: 10px;

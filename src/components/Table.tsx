@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Person, Sort, SortedPeople } from '../interfaces';
+import { Person, Sort } from '../interfaces';
 import { Edit } from './Edit';
 import './table.css'
 import arrow from './arrow.svg'
 
 interface Props {
-    people: SortedPeople[]
+    people: Person[]
     handleRemove(arg0: number): void
     handleEdit(arg0: number, arg1: Person): void
     changeSort(arg0: Sort): void
@@ -13,7 +13,7 @@ interface Props {
 
 export const Table: React.FC<Props> = ({ people, handleRemove, handleEdit, changeSort }) => {
 
-    const [editPerson, setEditPerson] = useState<Person>({ firstName: '', lastName: '', age: 0 });
+    const [editPerson, setEditPerson] = useState<Person>({id: 0, firstname: '', lastname: '', age: 0 });
     const [personIndex, setPersonIndex] = useState(0);
     const [editShown, changeEditVisibility] = useState(false);
 
@@ -27,10 +27,10 @@ export const Table: React.FC<Props> = ({ people, handleRemove, handleEdit, chang
         changeSort(sort)
     }, [sort]);
 
-    function handleSortChange(origin: "firstName" | "lastName" | "age") {
+    function handleSortChange(origin: "firstname" | "lastname" | "age") {
         switch (origin) {
-            case 'firstName':
-                if (sort.sort === 'firstName') {
+            case 'firstname':
+                if (sort.sort === 'firstname') {
                     if (sort.reverse) {
                         setSort({ reverse: false, sort: null });
                         return
@@ -41,11 +41,11 @@ export const Table: React.FC<Props> = ({ people, handleRemove, handleEdit, chang
                     }
                 }
                 else {
-                    setSort({ reverse: false, sort: 'firstName' })
+                    setSort({ reverse: false, sort: 'firstname' });
                     return
                 }
-            case 'lastName':
-                if (sort.sort === 'lastName') {
+            case 'lastname':
+                if (sort.sort === 'lastname') {
                     if (sort.reverse) {
                         setSort({ reverse: false, sort: null });
                         return
@@ -56,7 +56,7 @@ export const Table: React.FC<Props> = ({ people, handleRemove, handleEdit, chang
                     }
                 }
                 else {
-                    setSort({ reverse: false, sort: 'lastName' })
+                    setSort({ reverse: false, sort: 'lastname' });
                     return
                 }
             case 'age':
@@ -71,7 +71,7 @@ export const Table: React.FC<Props> = ({ people, handleRemove, handleEdit, chang
                     }
                 }
                 else {
-                    setSort({ reverse: false, sort: 'age' })
+                    setSort({ reverse: false, sort: 'age' });
                     return
                 }
 
@@ -81,17 +81,17 @@ export const Table: React.FC<Props> = ({ people, handleRemove, handleEdit, chang
     const tableData = people.map((person, index) => {
         return (
             <tr key={index}>
-                <td>{person.person.firstName}</td>
-                <td>{person.person.lastName}</td>
-                <td>{person.person.age}</td>
+                <td>{person.firstname}</td>
+                <td>{person.lastname}</td>
+                <td>{person.age}</td>
                 <td className='control'>
-                    <button onClick={() => handleRemove(index)}>
+                    <button onClick={() => handleRemove(person.id)}>
                         Poista
                     </button>
 
                     <button onClick={() => {
-                        setEditPerson(people[index].person);
-                        setPersonIndex(person.mainIndex);
+                        setEditPerson(person);
+                        setPersonIndex(person.id); 
                         changeEditVisibility(!editShown);
                     }}>
                         Muokkaa
@@ -109,22 +109,22 @@ export const Table: React.FC<Props> = ({ people, handleRemove, handleEdit, chang
                 <thead>
                     <tr>
                         <th onClick={() => {
-                            handleSortChange("firstName")
-                        }} className={sort.sort === "firstName" ? "sorted" : "unsorted"}>
+                            handleSortChange("firstname")
+                        }} className={sort.sort === "firstname" ? "sorted" : "unsorted"}>
                             Etunimi
 
-                            {sort.sort === "firstName" && !sort.reverse? <img className='sort' src={arrow}/> : null}
+                            {sort.sort === "firstname" && !sort.reverse? <img className='sort' src={arrow}/> : null}
 
-                            {sort.sort === "firstName" && sort.reverse ? <img className='sortReverse' src={arrow}/> : null}
+                            {sort.sort === "firstname" && sort.reverse ? <img className='sortReverse' src={arrow}/> : null}
                         </th>
 
                         <th onClick={() => {
-                            handleSortChange("lastName")
-                        }} className={sort.sort === "lastName" ? "sorted" : "unsorted"}>
+                            handleSortChange("lastname")
+                        }} className={sort.sort === "lastname" ? "sorted" : "unsorted"}>
                             Sukunimi
-                            {sort.sort === "lastName" && !sort.reverse? <img className='sort' src={arrow}/> : null}
+                            {sort.sort === "lastname" && !sort.reverse? <img className='sort' src={arrow}/> : null}
 
-                            {sort.sort === "lastName" && sort.reverse ? <img className='sortReverse' src={arrow}/> : null}
+                            {sort.sort === "lastname" && sort.reverse ? <img className='sortReverse' src={arrow}/> : null}
                         </th>
 
                         <th onClick={() => {

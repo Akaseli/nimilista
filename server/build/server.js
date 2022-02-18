@@ -28,14 +28,12 @@ var pg_1 = require("pg");
 var app = (0, express_1.default)();
 var port = process.env.PORT || 4000;
 app.use(express_1.default.json());
-dotenv.config({ path: __dirname + '/.env' });
 var production = process.env.PRODUCTION === "true";
+app.use(express_1.default.static("build"));
+dotenv.config({ path: __dirname + '/.env' });
 var localDatabaseUrl = "postgresql://".concat(process.env.USER, ":").concat(process.env.PASSWORD, "@").concat(process.env.HOST, ":").concat(process.env.DBPORT, "/").concat(process.env.DATABASE);
 var pool = new pg_1.Pool({
     connectionString: production ? process.env.DATABASE_URL : localDatabaseUrl,
-});
-app.get("/", function (req, res) {
-    res.send({ online: true });
 });
 app.get("/people", function (req, res) {
     pool.query('SELECT * FROM people', function (error, results) {
@@ -54,11 +52,11 @@ app.get("/people/:userId", function (req, res) {
     });
 });
 app.post("/addPerson", function (req, res) {
-    pool.query('INSERT INTO people(firstname, lastname, age) VALUES($1, $2, $3)', [req.body["firstName"], req.body["lastName"], req.body["age"]], function (error, results) {
+    pool.query('INSERT INTO people(firstname, lastname, age) VALUES($1, $2, $3) RETURNING *', [req.body["firstName"], req.body["lastName"], req.body["age"]], function (error, results) {
         if (error) {
             throw error;
         }
-        res.status(200).send();
+        res.status(200).send(results.rows[0]);
     });
 });
 app.delete("/delete/:userId", function (req, res) {
@@ -70,13 +68,16 @@ app.delete("/delete/:userId", function (req, res) {
     });
 });
 app.put("/people/modify/:userId", function (req, res) {
-    pool.query('UPDATE people SET firstname = $1, lastname = $2, age = $3)', [req.body["firstName"], req.body["lastName"], req.body["age"]], function (error, results) {
+    pool.query('UPDATE people SET firstname = $1, lastname = $2, age = $3 WHERE id = $4', [req.body["firstName"], req.body["lastName"], req.body["age"], req.params.userId], function (error, results) {
         if (error) {
             throw error;
         }
         res.status(200).send();
     });
 });
+//app.get("*", (req, res) => {
+//    res.sendFile(`${__dirname}/public/index.html`)
+//});
 app.listen(port, function () {
     console.log("Listening on ".concat(port));
 });

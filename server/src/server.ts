@@ -6,19 +6,17 @@ const port = process.env.PORT || 4000;
 
 app.use(express.json())
 
-dotenv.config({ path: __dirname+'/.env' });
-
 const production = process.env.PRODUCTION === "true";
+
+app.use(express.static("build"))
+
+dotenv.config({ path: __dirname+'/.env' });
 
 const localDatabaseUrl =  `postgresql://${process.env.USER}:${process.env.PASSWORD}@${process.env.HOST}:${process.env.DBPORT}/${process.env.DATABASE}`;
 
 const pool = new Pool({
     connectionString: production ? process.env.DATABASE_URL : localDatabaseUrl,
 })
-
-app.get("/", (req, res) => {
-    res.send({online: true})
-});
 
 app.get("/people", (req, res) => {
     pool.query('SELECT * FROM people', (error, results) => {
@@ -39,11 +37,11 @@ app.get("/people/:userId", (req, res) => {
 });
 
 app.post("/addPerson", (req, res) => {
-    pool.query('INSERT INTO people(firstname, lastname, age) VALUES($1, $2, $3)', [req.body["firstName"], req.body["lastName"], req.body["age"]], (error, results) => {
+    pool.query('INSERT INTO people(firstname, lastname, age) VALUES($1, $2, $3) RETURNING *', [req.body["firstName"], req.body["lastName"], req.body["age"]], (error, results) => {
         if (error){
             throw error;
         }
-        res.status(200).send();
+        res.status(200).send(results.rows[0]);
     });
 });
 
@@ -57,13 +55,17 @@ app.delete("/delete/:userId", (req, res) => {
 })
 
 app.put("/people/modify/:userId", (req, res) => {
-    pool.query('UPDATE people SET firstname = $1, lastname = $2, age = $3)', [req.body["firstName"], req.body["lastName"], req.body["age"]], (error, results) => {
+    pool.query('UPDATE people SET firstname = $1, lastname = $2, age = $3 WHERE id = $4', [req.body["firstName"], req.body["lastName"], req.body["age"], req.params.userId], (error, results) => {
         if(error){
             throw error;
         }
         res.status(200).send();
     });
 });
+
+//app.get("*", (req, res) => {
+//    res.sendFile(`${__dirname}/public/index.html`)
+//});
 
 app.listen(port, () => {
     console.log(`Listening on ${port}`)

@@ -28,10 +28,10 @@ export const Edit: React.FC<Props> = ({person, index, changeVisibility, handleEd
                 }}>
                     <label>
                         Etunimi
-                        <input required name='firstName' defaultValue={person.firstName} onChange={(e) => {
+                        <input required name='firstName' defaultValue={person.firstname} onChange={(e) => {
                             setInput({
                                 ...currentInput,
-                                firstName: e.target.value
+                                firstname: e.target.value
                             });
                         }}></input>
                     </label>
@@ -39,10 +39,10 @@ export const Edit: React.FC<Props> = ({person, index, changeVisibility, handleEd
 
                     <label>
                         Sukunimi
-                        <input required name='lastName' defaultValue={person.lastName} onChange={(e) => {
+                        <input required name='lastName' defaultValue={person.lastname} onChange={(e) => {
                             setInput({
                                 ...currentInput,
-                                lastName: e.target.value
+                                lastname: e.target.value
                             });
                         }}></input>
                     </label>
@@ -57,6 +57,8 @@ export const Edit: React.FC<Props> = ({person, index, changeVisibility, handleEd
                             });
                         }}></input>
                     </label>
+
+                    <br/>
 
                     <button type='submit'>Muokkaa</button>
                 </form>

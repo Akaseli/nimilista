@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const Form: React.FC<Props> = ({onSubmit}) => {
-    const [currentInput, setInput] = useState<Person>({firstName: '', lastName: '', age: 0});
+    const [currentInput, setInput] = useState<Person>({id: 0, firstname: '', lastname: '', age: 0});
 
     const formRef = React.createRef<HTMLFormElement>();
 
@@ -22,7 +22,7 @@ export const Form: React.FC<Props> = ({onSubmit}) => {
                 <input required name='firstName' onChange={(e) => {
                     setInput({
                         ...currentInput,
-                        firstName: e.target.value
+                        firstname: e.target.value
                     });
                 }}></input>
             </label>
@@ -33,7 +33,7 @@ export const Form: React.FC<Props> = ({onSubmit}) => {
                 <input required name='lastName' onChange={(e) => {
                     setInput({
                         ...currentInput,
-                        lastName: e.target.value
+                        lastname: e.target.value
                     });
                 }}></input>
             </label>
@@ -48,7 +48,7 @@ export const Form: React.FC<Props> = ({onSubmit}) => {
                     });
                 }}></input>
             </label>
-        
+            
             <button type='submit'>Lisää</button>
         </form>
     );
